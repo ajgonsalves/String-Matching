@@ -21,8 +21,7 @@ Z::Z (std::string& p, std::string& t) {
 	text = t;
 	z_string = p + "$" + t;
 
-	z_array.resize (z_string.length ());
-	z_array [0] = 0; // only proper prefixes will have a z_box value
+	z_array = std::vector <size_t> (z_string.size (), 0);
 
 	ComputeZArray ();
 	SearchZArrayForMatches ();
@@ -54,7 +53,7 @@ void Z::ComputeZArray () {
 			}
 			// if there was a z_box, update l, r, and z_array [k]
 			if (i > k) {
-				z_array [k] = i - k; // i is the index of the first mismatch, so don't include it
+				z_array [k] = i - k;
 				l = k;
 				r = i - 1;
 			}
@@ -62,21 +61,20 @@ void Z::ComputeZArray () {
 		// case 2: k is inside a z-box
 		else {
 			// case 2a: z of k' is within the bounds of the current z-box
-			if (z_array [k - l] < (r - k + 1))
+			if (z_array [k - l] < (r + 1 - k))
 				z_array [k] = z_array [k - l];
 			// case 2b: z of k' extends to the bounds of the current z-box (and therefore may extend even further)
 			else {
 				size_t k_extension = r + 1;
 				for (; k_extension < z_string.length (); ++k_extension) {
-					if (z_string [k_extension] != z_string [k_extension - l])
+					if (z_string [k_extension] != z_string [k_extension - k])
 						break;
 				}
-				// if k_extension > r + 1, then we have to update the zbox parameters
-				if (k_extension > r + 1) {
-					r = k_extension - 1; // k_extension is the index of the first mismatch, so r is the index right before it
-					l = k;
-				}
-				z_array [k] = k_extension - k; // we don't include z_string [k_extension] itself because k_extension is the index of the first mismatch
+
+				// k_extension is the index of the first mismatch
+				z_array [k] = k_extension - k;
+				l = k;
+				r = k_extension - 1;
 			}
 		}
 	}
