@@ -54,7 +54,7 @@ void KnuthMorrisPratt::ComputeZArray () {
 			}
 			// if there was a z_box, update l, r, and z_array [k]
 			if (i > k) {
-				z_array [k] = i - k; // i is the index of the first mismatch, so don't include it
+				z_array [k] = i - k;
 				l = k;
 				r = i - 1;
 			}
@@ -62,21 +62,20 @@ void KnuthMorrisPratt::ComputeZArray () {
 		// case 2: k is inside a z-box
 		else {
 			// case 2a: z of k' is within the bounds of the current z-box
-			if (z_array [k - l] < (r - k + 1))
+			if (z_array [k - l] < (r + 1 - k))
 				z_array [k] = z_array [k - l];
 			// case 2b: z of k' extends to the bounds of the current z-box (and therefore may extend even further)
 			else {
 				size_t k_extension = r + 1;
 				for (; k_extension < pattern.length (); ++k_extension) {
-					if (pattern [k_extension] != pattern [k_extension - l])
+					if (pattern [k_extension] != pattern [k_extension - k])
 						break;
 				}
-				// if k_extension > r + 1, then we have to update the zbox parameters
-				if (k_extension > r + 1) {
-					r = k_extension - 1; // k_extension is the index of the first mismatch, so r is the index right before it
-					l = k;
-				}
-				z_array [k] = k_extension - k; // we don't include pattern [k_extension] itself because k_extension is the index of the first mismatch
+
+				// k_extension is the index of the first mismatch
+				z_array [k] = k_extension - k;
+				l = k;
+				r = k_extension - 1;
 			}
 		}
 	}
@@ -149,36 +148,9 @@ void KnuthMorrisPratt::ComputeMatchLocations () {
 		// text [t_ind] doesn't appear in p at all
 		if (p_ind == 0)
 			t_ind++;
-
-		p_ind = sp_array [p_ind - 1];
-
-
-		/*
-		// match at current indices
-		if (pattern [p_ind] == text [t_ind]) {
-			// complete match
-			if (p_ind == pattern.length () - 1) {
-				match_locations.push_back (t_ind - p_ind + 1);
-				t_ind += p_ind - sp_array [p_ind];
-				p_ind = sp_array [p_ind];
-			}
-			// partial match
-			else {
-				t_ind++;
-				p_ind++;
-			}
-		}
-		// mismatch at current indices
-		else {
-			int partial_match_length = p_ind - 1;
-			
-			if (partial_match_length > 0 && sp_array [partial_match_length - 1] > 0) {
-				p_ind = sp_array [partial_match_length - 1];
-			}
-			else
-				p_ind = 0;
-		}
-		*/
+		// otherwise we can safely shift
+		else 
+			p_ind = sp_array [p_ind - 1];
 	}
 }
 
