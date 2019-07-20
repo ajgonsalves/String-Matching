@@ -2,6 +2,7 @@
 #define BURROWS_WHEELER_CPP
 
 #include "BurrowsWheeler.h"
+#include <iostream>
 #include <map>
 #include <queue>
 #include <string>
@@ -10,10 +11,10 @@
 
 BurrowsWheeler::BurrowsWheeler (std::string user_input, bool encode_flag = true) {
 	encode_polarity = encode_flag;
-	preprocessOriginal (user_input);
 
 	if (encode_polarity) {
 		decoded = user_input;
+		preprocessOriginal (user_input);
 		encoded = encodeString (user_input);
 	}
 	else {
@@ -126,26 +127,23 @@ std::string BurrowsWheeler::decodeString (std::string& s) {
 		}
 	}
 
-	// construct reversed string with the left shift technique
+	// construct original (decoded) string with the left shift technique
 	// https://www.youtube.com/watch?v=DqdjbK68l3s
 	Occurrence current_occurrence = Occurrence ('$', 0);
-	int left_shift;
-	char reversed[m + 1];
-	reversed[m] = '\0';
+	char original[m];
+	original[m - 1] = '\0';
 
-	for (int i = 0; i < m; ++i) {
+	for (int i = m - 2; i >= 0; --i) {
 		int j = 0;
+
 		while (j < m && first_column[j] != current_occurrence)
 			++j;
 
-		j = (j + 1) % m; // get the next row down
-		reversed[m - (i + 1)] = last_column[j].ch;
+		original[i] = last_column[j].ch;
 		current_occurrence = last_column[j];
 	}
 
-	// compute original string from reversed
-	std::string original = std::string (reversed);
-	return original;
+	return (std::string (original));
 }
 
 std::string BurrowsWheeler::getEncoded () {
