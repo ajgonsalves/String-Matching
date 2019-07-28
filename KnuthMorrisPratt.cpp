@@ -12,8 +12,8 @@
  * is useful because if there is a partial match of pattern with text, the lookup tells you how many characters
  * you know you can shift pattern by because they are guaranteed to match after the skip. Why? Because up until the
  * first mismatch, a proper suffix of the pattern matched the text, and if that proper suffix is a proper prefix of
- * the pattern you can skip to it. This also doesn't skip too far because 
- * A match is detected when the length of the 
+ * the pattern you can skip to it. This also doesn't skip too far because the largest possible
+ * suffix-prefix length is subtracted from the skip amount.
  *
  * Complexity: O(p + t), preprocessing pattern takes p time, scanning text with help of the lookup table takes t time
  * because redudant comparisons are skipped over.

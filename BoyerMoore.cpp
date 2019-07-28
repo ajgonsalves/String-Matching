@@ -1,3 +1,4 @@
+
 #ifndef BOYER_MOORE_CPP
 #define BOYER_MOORE_CPP
 

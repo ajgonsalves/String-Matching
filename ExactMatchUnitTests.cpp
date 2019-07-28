@@ -80,6 +80,94 @@ TEST_CASE ("a in aaaaa") {
 	REQUIRE (kmp_matcher.FetchMatchLocations () == answer);
 }
 
+TEST_CASE ("aa in aaaaa") {
+	std::string p = "aa";
+	std::string t = "aaaaa";
+	std::vector <size_t> answer = {0, 1, 2, 3};
+
+	// test Naive matcher
+	Naive naive_matcher = Naive (p, t);
+	REQUIRE (naive_matcher.FetchMatchLocations () == answer);
+
+	// test Z matcher
+	Z z_matcher = Z (p, t);
+	REQUIRE (z_matcher.FetchMatchLocations () == answer);
+
+	// test Boyer Moore matcher
+	BoyerMoore bm_matcher = BoyerMoore (p, t);
+	REQUIRE (bm_matcher.FetchMatchLocations () == answer);
+
+	// test KMP matcher
+	KnuthMorrisPratt kmp_matcher = KnuthMorrisPratt (p, t);
+	REQUIRE (kmp_matcher.FetchMatchLocations () == answer);
+}
+
+TEST_CASE ("aaa in aaaaa") {
+	std::string p = "aaa";
+	std::string t = "aaaaa";
+	std::vector <size_t> answer = {0, 1, 2};
+
+	// test Naive matcher
+	Naive naive_matcher = Naive (p, t);
+	REQUIRE (naive_matcher.FetchMatchLocations () == answer);
+
+	// test Z matcher
+	Z z_matcher = Z (p, t);
+	REQUIRE (z_matcher.FetchMatchLocations () == answer);
+
+	// test Boyer Moore matcher
+	BoyerMoore bm_matcher = BoyerMoore (p, t);
+	REQUIRE (bm_matcher.FetchMatchLocations () == answer);
+
+	// test KMP matcher
+	KnuthMorrisPratt kmp_matcher = KnuthMorrisPratt (p, t);
+	REQUIRE (kmp_matcher.FetchMatchLocations () == answer);
+}
+
+TEST_CASE ("aaaa in aaaaa") {
+	std::string p = "aaaa";
+	std::string t = "aaaaa";
+	std::vector <size_t> answer = {0, 1};
+
+	// test Naive matcher
+	Naive naive_matcher = Naive (p, t);
+	REQUIRE (naive_matcher.FetchMatchLocations () == answer);
+
+	// test Z matcher
+	Z z_matcher = Z (p, t);
+	REQUIRE (z_matcher.FetchMatchLocations () == answer);
+
+	// test Boyer Moore matcher
+	BoyerMoore bm_matcher = BoyerMoore (p, t);
+	REQUIRE (bm_matcher.FetchMatchLocations () == answer);
+
+	// test KMP matcher
+	KnuthMorrisPratt kmp_matcher = KnuthMorrisPratt (p, t);
+	REQUIRE (kmp_matcher.FetchMatchLocations () == answer);
+}
+
+TEST_CASE ("aaaaa in aaaaa") {
+	std::string p = "aaaaa";
+	std::string t = "aaaaa";
+	std::vector <size_t> answer = {0};
+
+	// test Naive matcher
+	Naive naive_matcher = Naive (p, t);
+	REQUIRE (naive_matcher.FetchMatchLocations () == answer);
+
+	// test Z matcher
+	Z z_matcher = Z (p, t);
+	REQUIRE (z_matcher.FetchMatchLocations () == answer);
+
+	// test Boyer Moore matcher
+	BoyerMoore bm_matcher = BoyerMoore (p, t);
+	REQUIRE (bm_matcher.FetchMatchLocations () == answer);
+
+	// test KMP matcher
+	KnuthMorrisPratt kmp_matcher = KnuthMorrisPratt (p, t);
+	REQUIRE (kmp_matcher.FetchMatchLocations () == answer);
+}
+
 TEST_CASE ("abab in babababab") {
 	std::string p = "ab";
 	std::string t = "babababab";
@@ -234,10 +322,10 @@ TEST_CASE ("abababca in babababca") {
 	REQUIRE (kmp_matcher.FetchMatchLocations () == answer);
 }
 
-TEST_CASE ("aaa in aaaaa") {
-	std::string p = "aaa";
-	std::string t = "aaaaa";
-	std::vector <size_t> answer = {0, 1, 2};
+TEST_CASE ("ten in contentious") {
+	std::string p = "ten";
+	std::string t = "contentious";
+	std::vector <size_t> answer = {3};
 
 	// test Naive matcher
 	Naive naive_matcher = Naive (p, t);
