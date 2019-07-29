@@ -43,8 +43,13 @@ int main() {
 
 		if (user_choice == "e")
 			std::cout << Encode (user_string) << std::endl;
-		else
-			std::cout << Decode (user_string) << std::endl;
+		else {
+			try {
+				std::cout << Decode (user_string) << std::endl;
+			} catch (const char* msg) {
+				std::cerr << msg << std::endl;
+			}
+		}
 	}
 
 	return 0;
