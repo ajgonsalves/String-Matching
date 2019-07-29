@@ -71,3 +71,19 @@ TEST_CASE ("decode: smnpbnnaaaaa$a") {
 	BurrowsWheeler decoder = BurrowsWheeler (s, false);
 	REQUIRE (decoder.getDecoded() == t);
 }
+
+TEST_CASE ("decode(encode(panamabananas))") {
+	std::string s = "panamabananas";
+	BurrowsWheeler reversible = BurrowsWheeler (s);
+	std::string encoded = reversible.getEncoded();
+	BurrowsWheeler restored = BurrowsWheeler (encoded, false);
+	REQUIRE (restored.getDecoded() == s);
+}
+
+TEST_CASE ("decode(encode(It was Professor McGonnagall, and her mouth was the thinnest of thin lines.))") {
+	std::string s = "It was Professor McGonnagall, and her mouth was the thinnest of thin lines.";
+	BurrowsWheeler reversible = BurrowsWheeler (s);
+	std::string encoded = reversible.getEncoded();
+	BurrowsWheeler restored = BurrowsWheeler (encoded, false);
+	REQUIRE (restored.getDecoded() == s);
+}
